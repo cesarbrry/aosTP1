@@ -23,36 +23,37 @@ public class UserService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public User registerUser(String username, String password) {
+    public User registerUser(User user) 
+    {
         
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) 
+        
+        {
             throw new RuntimeException("Username already exists!");
         }
 
-       
-        String encodedPassword = passwordEncoder.encode(password);
-
-
-        User newUser = new User(username, encodedPassword);
-        return userRepository.save(newUser);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        return userRepository.save(user);
     }
 
 
-    public String authenticateUser(String username, String password) {
+    public String authenticateUser(String username, String password) 
+    {
 
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isEmpty()) {
-            throw new RuntimeException("Invalid username or password!");
+        if (userRepository.findByUsername(username).isPresent())
+        {
+            if (!passwordEncoder.matches(password, user.getPassword())) 
+            {
+                throw new RuntimeException("Invalid username or password!");
+            }
+
+            else
+            {
+                return jwtTokenProvider.generateToken(username);
+            }
         }
 
-        User user = optionalUser.get();
-
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid username or password!");
-        }
-
-
-        return jwtTokenProvider.generateToken(username);
+        throw new RuntimeException("Invalid username or password!");
+        
     }
 }

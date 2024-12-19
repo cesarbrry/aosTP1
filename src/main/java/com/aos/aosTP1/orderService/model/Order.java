@@ -10,9 +10,16 @@ import jakarta.persistence.Id;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
+
+    @Column(name="userId")
     private Long userId; 
+
+    @Column(name="product")
     private String product;
+
+    @Column(name="quantity")
     private int quantity;
 
     public Order() {

@@ -18,55 +18,22 @@ public class OrderController {
     }
 
     //recuperer toutes les commandes
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() 
-    {
-        List<Order> orders = orderService.getAllOrders();
-        
-        if (!orders.isEmpty())
-        {
-            return ResponseEntity.ok(orders); // on a des commandes
-        }
-        else
-        {
-            return ResponseEntity.notFound().build(); // table vide
-        }
+    @GetMapping(name="/all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(OrderService.getAllOrders());  
     }
 
     //recuperer par ID de commande
-    @GetMapping
-    public ResponseEntity<List<Order>> getOrderById(@PathVariable Long id) 
-    {
-        Optional<Order> optionalOrder = orderService.getOrderById(id);
-
-        if (optionalOrder.isPresent()) 
-        {
-            Order order = optionalOrder.get();
-            return ResponseEntity.ok(order); // commande trouvee
-        } 
-
-        else 
-        {
-            return ResponseEntity.notFound().build(); // commande pas trouvee
-        }
-           
+    @GetMapping(name="/findById/{id}")
+    public ResponseEntity<Optional<Order>> getOrderById(@RequestBody Long id) {
+        return ResponseEntity.ok(OrderService.getOrderById(id));  
     }
+
 
     //recuperer par ID d'utilisateur 
-    @GetMapping
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) 
-    {
-        List<Order> orders = orderService.getOrdersByUserId(userId);
-
-        if (orders != null && !orders.isEmpty()) 
-        {
-            return ResponseEntity.ok(orders); // commande trouvee
-        } 
-        
-        else 
-        {
-            return ResponseEntity.notFound().build(); // pas de commande dans le tableau ou pas de commande de l'utilisateur
-        }
-           
+    @GetMapping(name="/findByUId/{userId}")
+    public ResponseEntity<List<Order>> getOrdersByUserId(@RequestBody Long userId) {
+        return ResponseEntity.ok(OrderService.getOrdersByUserId(userId));  
     }
+
 }

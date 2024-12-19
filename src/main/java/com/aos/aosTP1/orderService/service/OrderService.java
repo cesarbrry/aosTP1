@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -37,16 +38,49 @@ public class OrderService {
 
     public List<Order> getAllOrders() 
     {
-        return orderRepository.findAll();
+        List<Order> allOrders = orderRepository.getAllOrders();
+        
+        if (allOrders.isEmpty()) 
+        {
+            throw new IllegalArgumentException('Order table is empty');
+        } 
+        
+        else 
+        {
+         return allOrders;   
+        }
+
     }
 
     public Optional<Order> getOrderById(Long orderId) 
     {
-        return orderRepository.findById(orderId);
+        Optional<Order> OrderById = orderService.getOrderById(orderId);
+
+        if (OrderById.isPresent())
+        {
+            return OrderById;
+        } 
+        
+        else 
+        {
+            throw new RuntimeException('No Order with this Id')
+        }
+        
     }
 
     public List<Order> getOrdersByUserId(Long userId) 
     {
-        return orderRepository.findByUserId(userId);
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+
+        if (orders == null || orders.isEmpty()) 
+        {
+            throw new IllegalArgumentException('This User has no order');
+        } 
+        
+        else 
+        {
+         return orders;   
+        }
+        
     }
 }
