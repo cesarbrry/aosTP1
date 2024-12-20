@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -17,23 +21,26 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    //recuperer toutes les commandes
-    @GetMapping(name="/all")
+    //get all orders
+    @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
-        return ResponseEntity.ok(OrderService.getAllOrders());  
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
     }
 
-    //recuperer par ID de commande
-    @GetMapping(name="/findById/{id}")
+    //get via order ID
+    @GetMapping("/orders/{orderId}")
     public ResponseEntity<Optional<Order>> getOrderById(@RequestBody Long id) {
-        return ResponseEntity.ok(OrderService.getOrderById(id));  
+        Optional<Order> order = orderService.getOrderById(id);
+        return ResponseEntity.ok(order);
     }
 
 
-    //recuperer par ID d'utilisateur 
-    @GetMapping(name="/findByUId/{userId}")
+    //get via user ID
+    @GetMapping("/orders/{userId}")
     public ResponseEntity<List<Order>> getOrdersByUserId(@RequestBody Long userId) {
-        return ResponseEntity.ok(OrderService.getOrdersByUserId(userId));  
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return ResponseEntity.ok(orders);
     }
 
 }

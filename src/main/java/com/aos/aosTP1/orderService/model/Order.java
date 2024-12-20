@@ -1,12 +1,9 @@
 package com.aos.aosTP1.orderService.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-@table(name="orders")
+@Table(name="orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +22,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String userId, String product, int quantity) {
+    public Order(Long userId, String product, int quantity) {
         this.userId = userId;
         this.product = product;
         this.quantity = quantity;
@@ -39,11 +36,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

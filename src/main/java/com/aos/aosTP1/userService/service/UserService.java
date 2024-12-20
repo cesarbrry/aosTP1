@@ -39,21 +39,22 @@ public class UserService {
 
     public String authenticateUser(String username, String password) 
     {
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if (userRepository.findByUsername(username).isPresent())
-        {
-            if (!passwordEncoder.matches(password, user.getPassword())) 
-            {
-                throw new RuntimeException("Invalid username or password!");
-            }
-
-            else
-            {
-                return jwtTokenProvider.generateToken(username);
-            }
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("Invalid username or password!");
         }
 
-        throw new RuntimeException("Invalid username or password!");
+        User user = userOptional.get();
+
+        if (!passwordEncoder.matches(password, user.getPassword()))
+        {
+            throw new RuntimeException("Invalid username or password!");
+        }
+        else
+        {
+            return jwtTokenProvider.generateToken(username);
+        }
         
     }
 }
